@@ -6,8 +6,6 @@
 
 @layer base {
   :root {
-    /* Brand: #566471 → HSL(210, 13%, 39%) */
-    /* Secondary: #298f5e → HSL(153, 55%, 36%) */
     --background: 40 20% 97%;
     --foreground: 210 13% 15%;
 
@@ -38,17 +36,23 @@
 
     --radius: 0.375rem;
 
-    /* Custom tokens */
-    --hero-overlay: 210 13% 15%;
+    /* Funnel tokens */
+    --hero-overlay: 210 13% 10%;
     --section-alt: 40 18% 95%;
-    --section-dark: 210 13% 15%;
+    --section-dark: 210 13% 12%;
     --section-dark-foreground: 40 20% 95%;
-    --cta-bg: 153 55% 32%;
+    --section-accent: 153 55% 95%;
+    --section-warm: 30 30% 95%;
+    --cta-bg: 153 55% 36%;
     --cta-hover: 153 55% 28%;
-    --sticky-cta: 210 13% 25%;
-    --sticky-cta-hover: 210 13% 20%;
+    --cta-pulse: 153 55% 40%;
+    --sticky-cta: 210 13% 22%;
+    --sticky-cta-hover: 210 13% 16%;
     --trust-badge: 40 30% 94%;
     --divider: 40 15% 85%;
+    --urgency: 25 95% 53%;
+    --urgency-foreground: 0 0% 100%;
+    --highlight: 45 100% 51%;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -78,7 +82,11 @@
 
 @layer components {
   .section-padding {
-    @apply py-20 md:py-24 lg:py-28;
+    @apply py-16 md:py-20 lg:py-24;
+  }
+
+  .section-padding-lg {
+    @apply py-20 md:py-28 lg:py-32;
   }
 
   .section-alt {
@@ -90,16 +98,32 @@
     color: hsl(var(--section-dark-foreground));
   }
 
+  .section-accent-bg {
+    background-color: hsl(var(--section-accent));
+  }
+
+  .section-warm {
+    background-color: hsl(var(--section-warm));
+  }
+
   .container-site {
     @apply max-w-7xl mx-auto px-5 md:px-8 lg:px-12;
   }
 
+  .container-funnel {
+    @apply max-w-4xl mx-auto px-5 md:px-8;
+  }
+
   .heading-hero {
-    @apply text-[38px] md:text-[52px] lg:text-[68px] font-bold leading-[1.05] tracking-tight;
+    @apply text-[40px] md:text-[56px] lg:text-[72px] font-extrabold leading-[1.02] tracking-tight;
   }
 
   .heading-section {
-    @apply text-3xl md:text-4xl lg:text-[42px] font-semibold leading-tight tracking-tight;
+    @apply text-[28px] md:text-[36px] lg:text-[44px] font-bold leading-[1.1] tracking-tight;
+  }
+
+  .heading-sub {
+    @apply text-xl md:text-2xl font-semibold leading-snug;
   }
 
   .heading-card {
@@ -112,6 +136,37 @@
 
   .body-base {
     @apply text-base font-light leading-relaxed;
+  }
+
+  .label-funnel {
+    @apply text-xs md:text-sm font-bold uppercase tracking-[0.2em] text-secondary;
+  }
+
+  /* FUNNEL CTA — big, bold, impossible to miss */
+  .btn-funnel {
+    @apply inline-flex items-center justify-center gap-3 px-10 py-5 rounded-lg text-lg md:text-xl font-bold uppercase tracking-wide transition-all duration-300;
+    background-color: hsl(var(--cta-bg));
+    color: hsl(var(--secondary-foreground));
+    box-shadow: 0 6px 24px -4px hsl(var(--secondary) / 0.5);
+  }
+
+  .btn-funnel:hover {
+    background-color: hsl(var(--cta-hover));
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px -6px hsl(var(--secondary) / 0.6);
+  }
+
+  .btn-funnel-dark {
+    @apply inline-flex items-center justify-center gap-3 px-10 py-5 rounded-lg text-lg md:text-xl font-bold uppercase tracking-wide transition-all duration-300;
+    background-color: hsl(var(--sticky-cta));
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 6px 24px -4px hsl(var(--primary) / 0.4);
+  }
+
+  .btn-funnel-dark:hover {
+    background-color: hsl(var(--sticky-cta-hover));
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px -6px hsl(var(--primary) / 0.5);
   }
 
   .btn-primary {
@@ -175,7 +230,45 @@
     color: hsl(var(--accent-foreground));
   }
 
+  .funnel-divider {
+    @apply flex items-center justify-center py-6;
+  }
+
+  .funnel-divider::before,
+  .funnel-divider::after {
+    content: '';
+    @apply flex-1 h-px;
+    background-color: hsl(var(--divider));
+  }
+
+  .funnel-divider > * {
+    @apply px-4;
+  }
+
+  /* Urgency bar */
+  .urgency-bar {
+    background-color: hsl(var(--urgency));
+    color: hsl(var(--urgency-foreground));
+    @apply text-center py-2.5 text-sm font-semibold tracking-wide;
+  }
+
+  /* Highlight text */
+  .text-highlight {
+    background: linear-gradient(180deg, transparent 55%, hsl(var(--highlight) / 0.35) 55%);
+    @apply inline;
+  }
+
   .footer-credit {
     @apply text-xs opacity-60;
+  }
+
+  /* Pulse animation for CTA */
+  @keyframes cta-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 hsl(var(--cta-pulse) / 0.5); }
+    50% { box-shadow: 0 0 0 12px hsl(var(--cta-pulse) / 0); }
+  }
+
+  .btn-pulse {
+    animation: cta-pulse 2.5s ease-in-out infinite;
   }
 }
