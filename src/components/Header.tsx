@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import PreviewTopBar from "./PreviewTopBar";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -16,7 +17,6 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const isHome = location.pathname === "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -31,17 +31,10 @@ const Header = () => {
 
   return (
     <>
-      {/* Urgency bar — homepage only */}
-      {isHome && (
-        <div className="urgency-bar fixed top-0 left-0 right-0 z-[60]">
-          🔥 10% Off Your First Service — Call Now: (417) 782-6167
-        </div>
-      )}
+      <PreviewTopBar />
 
       <header
-        className={`fixed left-0 right-0 z-50 transition-all duration-300 ${
-          isHome ? "top-[38px]" : "top-0"
-        } ${
+        className={`fixed left-0 right-0 z-50 transition-all duration-300 top-[42px] ${
           scrolled
             ? "bg-background/95 backdrop-blur-md shadow-sm"
             : "bg-background/80 backdrop-blur-sm"
@@ -69,10 +62,6 @@ const Header = () => {
                 {link.label}
               </Link>
             ))}
-            <a href="tel:4177826167" className="btn-primary text-xs py-2.5 px-5 gap-2 btn-pulse">
-              <Phone className="w-3.5 h-3.5" />
-              Call Now
-            </a>
           </nav>
 
           {/* Mobile toggle */}
@@ -102,10 +91,6 @@ const Header = () => {
                   {link.label}
                 </Link>
               ))}
-              <a href="tel:4177826167" className="btn-primary text-center mt-2 gap-2">
-                <Phone className="w-4 h-4" />
-                Call Now
-              </a>
             </nav>
           </div>
         )}
